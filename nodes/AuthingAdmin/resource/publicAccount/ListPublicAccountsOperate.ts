@@ -11,7 +11,7 @@ const ListPublicAccountsOperate: ResourceOperations = {
             displayName: '模糊搜索关键字',
             name: 'keywords',
             type: 'string',
-            required: false,
+
             default: '',
             placeholder: '例如：张三'
         },
@@ -20,7 +20,7 @@ const ListPublicAccountsOperate: ResourceOperations = {
             name: 'returnAll',
             type: 'boolean',
             default: false,
-            description: '是否返回所有结果（递归获取所有分页数据）',
+            description: 'Whether to return all results or only up to a given limit',
         },
         {
             displayName: 'Limit',
@@ -29,14 +29,13 @@ const ListPublicAccountsOperate: ResourceOperations = {
             default: 50,
             typeOptions: {
                 minValue: 1,
-                maxValue: 50
             },
             displayOptions: {
                 show: {
                     returnAll: [false],
                 },
             },
-            description: '每页返回的记录数',
+            description: 'Max number of results to return',
         },
         {
             displayName: 'Options',
@@ -49,7 +48,7 @@ const ListPublicAccountsOperate: ResourceOperations = {
                     displayName: '高级搜索',
                     name: 'advancedFilter',
                     type: 'json',
-                    required: false,
+
                     default: JSON.stringify(
                         [
                             {
@@ -67,10 +66,25 @@ const ListPublicAccountsOperate: ResourceOperations = {
                     description: '高级搜索，JSON 格式',
                 },
                 {
+                    displayName: 'Fuzzy Search On',
+                    name: 'fuzzySearchOn',
+                    type: 'json',
+
+                    default: JSON.stringify(
+                        ['phone', 'email', 'name', 'username', 'nickname', 'identityNumber'],
+                        null,
+                        2,
+                    ),
+                    typeOptions: {
+                        rows: 3,
+                    },
+                    description: '模糊搜索匹配的公共账号字段，可选值为：ID, phone, email, name, username, externalId, nickname, company, givenName, familyName, middleName, profile, preferredUsername, website, address, formatted, streetAddress, postalCode, identityNumber',
+                },
+                {
                     displayName: 'Search Query',
                     name: 'searchQuery',
                     type: 'json',
-                    required: false,
+
                     default: JSON.stringify(
                         {
                             query: {
@@ -93,7 +107,7 @@ const ListPublicAccountsOperate: ResourceOperations = {
                     displayName: 'Sort',
                     name: 'sort',
                     type: 'json',
-                    required: false,
+
                     default: JSON.stringify(
                         [
                             {
@@ -110,33 +124,18 @@ const ListPublicAccountsOperate: ResourceOperations = {
                     description: '排序设置，可以设置多项按照多个字段进行排序（field: 排序字段, direction: 排序方向 desc/asc）',
                 },
                 {
-                    displayName: 'Fuzzy Search On',
-                    name: 'fuzzySearchOn',
-                    type: 'json',
-                    required: false,
-                    default: JSON.stringify(
-                        ['phone', 'email', 'name', 'username', 'nickname', 'identityNumber'],
-                        null,
-                        2,
-                    ),
-                    typeOptions: {
-                        rows: 3,
-                    },
-                    description: '模糊搜索匹配的公共账号字段，可选值为：id, phone, email, name, username, externalId, nickname, company, givenName, familyName, middleName, profile, preferredUsername, website, address, formatted, streetAddress, postalCode, identityNumber',
-                },
-                {
                     displayName: 'With Custom Data',
                     name: 'withCustomData',
                     type: 'boolean',
                     default: true,
-                    description: '是否获取自定义数据',
+                    description: 'Whether to get custom data',
                 },
                 {
                     displayName: 'With Department IDs',
                     name: 'withDepartmentIds',
                     type: 'boolean',
                     default: true,
-                    description: '是否获取部门ID 列表',
+                    description: 'Whether to get department ID list',
                 },
             ],
         },

@@ -14,7 +14,7 @@ const UpdateGroupOperate: ResourceOperations = {
             required: true,
             default: '',
             placeholder: '例如：developer',
-            description: '分组 code',
+
         },
         {
             displayName: '分组描述',
@@ -23,7 +23,7 @@ const UpdateGroupOperate: ResourceOperations = {
             required: true,
             default: '',
             placeholder: '例如：描述内容',
-            description: '分组描述',
+
         },
         {
             displayName: 'Options',
@@ -36,16 +36,16 @@ const UpdateGroupOperate: ResourceOperations = {
                     displayName: '分组名称',
                     name: 'name',
                     type: 'string',
-                    required: false,
+
                     default: '',
                     placeholder: '例如：开发者',
-                    description: '分组名称',
+
                 },
                 {
                     displayName: 'New Code',
                     name: 'newCode',
                     type: 'string',
-                    required: false,
+
                     default: '',
                     placeholder: '例如：developer',
                     description: '分组新的 code',
@@ -54,7 +54,7 @@ const UpdateGroupOperate: ResourceOperations = {
                     displayName: 'Custom Data',
                     name: 'customData',
                     type: 'json',
-                    required: false,
+
                     default: JSON.stringify({ "custom_id": "xxx" }, null, 2),
                     typeOptions: {
                         rows: 5,

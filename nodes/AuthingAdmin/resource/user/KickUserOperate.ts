@@ -14,7 +14,7 @@ const KickUserOperate: ResourceOperations = {
             required: true,
             default: '',
             placeholder: '例如：6319a1504f3xxxxf214dd5b7',
-            description: '用户ID',
+
         },
         {
             displayName: 'APP ID 列表',
@@ -36,10 +36,10 @@ const KickUserOperate: ResourceOperations = {
             default: {},
             options: [
                 {
-                    displayName: 'User Id Type',
+                    displayName: 'User ID Type',
                     name: 'userldType',
                     type: 'string',
-                    required: false,
+
                     default: 'user_id',
                     placeholder: '例如：user_id',
                     description: '用户ID 类型，可选值：user_id, external_id, phone, email, username, identity, sync_relation, custom_field。默认值为 user_id',

@@ -11,7 +11,7 @@ const ListUsersOperate: ResourceOperations = {
             displayName: '模糊搜索关键字',
             name: 'keywords',
             type: 'string',
-            required: false,
+
             default: '',
             placeholder: '例如：张三'
         },
@@ -20,7 +20,7 @@ const ListUsersOperate: ResourceOperations = {
             name: 'returnAll',
             type: 'boolean',
             default: false,
-            description: '是否返回所有结果（递归获取所有分页数据）',
+            description: 'Whether to return all results or only up to a given limit',
         },
         {
             displayName: 'Limit',
@@ -29,14 +29,13 @@ const ListUsersOperate: ResourceOperations = {
             default: 50,
             typeOptions: {
                 minValue: 1,
-                maxValue: 50
             },
             displayOptions: {
                 show: {
                     returnAll: [false],
                 },
             },
-            description: '每页返回的记录数',
+            description: 'Max number of results to return',
         },
         {
             displayName: 'Options',
@@ -49,7 +48,7 @@ const ListUsersOperate: ResourceOperations = {
                     displayName: '高级搜索',
                     name: 'advancedFilter',
                     type: 'json',
-                    required: false,
+
                     default: JSON.stringify(
                         [
                             {
@@ -67,10 +66,39 @@ const ListUsersOperate: ResourceOperations = {
                     description: '高级搜索，JSON 格式，详见：https://api-explorer.authing.cn/?tag=tag/%E7%AE%A1%E7%90%86%E7%94%A8%E6%88%B7/API%20%E5%88%97%E8%A1%A8/operation/UsersManagementController_listUsers',
                 },
                 {
+                    displayName: 'Flat Custom Data',
+                    name: 'flatCustomData',
+                    type: 'boolean',
+                    default: false,
+                    description: 'Whether to flatten extended fields',
+                },
+                {
+                    displayName: 'Full Custom Data',
+                    name: 'fullCustomData',
+                    type: 'boolean',
+                    default: true,
+                    description: 'Whether to return all custom data',
+                },
+                {
+                    displayName: 'Fuzzy Search On',
+                    name: 'fuzzySearchOn',
+                    type: 'json',
+
+                    default: JSON.stringify(
+                        ['phone', 'email', 'name', 'username', 'nickname', 'identityNumber'],
+                        null,
+                        2,
+                    ),
+                    typeOptions: {
+                        rows: 3,
+                    },
+                    description: '模糊搜索字段数组',
+                },
+                {
                     displayName: 'Search Query',
                     name: 'searchQuery',
                     type: 'json',
-                    required: false,
+
                     default: JSON.stringify(
                         {
                             query: {
@@ -93,7 +121,7 @@ const ListUsersOperate: ResourceOperations = {
                     displayName: 'Sort',
                     name: 'sort',
                     type: 'json',
-                    required: false,
+
                     default: JSON.stringify(
                         [
                             {
@@ -110,68 +138,39 @@ const ListUsersOperate: ResourceOperations = {
                     description: '排序设置，可以设置多项按照多个字段进行排序（field: 排序字段, direction: 排序方向 desc/asc）',
                 },
                 {
-                    displayName: 'Fuzzy Search On',
-                    name: 'fuzzySearchOn',
-                    type: 'json',
-                    required: false,
-                    default: JSON.stringify(
-                        ['phone', 'email', 'name', 'username', 'nickname', 'identityNumber'],
-                        null,
-                        2,
-                    ),
-                    typeOptions: {
-                        rows: 3,
-                    },
-                    description: '模糊搜索字段数组',
-                },
-                {
                     displayName: 'With Custom Data',
                     name: 'withCustomData',
                     type: 'boolean',
                     default: true,
-                    description: '是否返回自定义数据',
-                },
-                {
-                    displayName: 'With Post',
-                    name: 'withPost',
-                    type: 'boolean',
-                    default: true,
-                    description: '是否返回部门信息',
-                },
-                {
-                    displayName: 'With Identities',
-                    name: 'withIdentities',
-                    type: 'boolean',
-                    default: true,
-                    description: '是否返回 Identities',
+                    description: 'Whether to return custom data',
                 },
                 {
                     displayName: 'With Department IDs',
                     name: 'withDepartmentIds',
                     type: 'boolean',
                     default: true,
-                    description: '是否返回部门ID列表',
+                    description: 'Whether to return department ID list',
                 },
                 {
-                    displayName: 'Full Custom Data',
-                    name: 'fullCustomData',
+                    displayName: 'With Identities',
+                    name: 'withIdentities',
                     type: 'boolean',
                     default: true,
-                    description: '是否返回所有自定义数据',
+                    description: 'Whether to return identities',
+                },
+                {
+                    displayName: 'With Post',
+                    name: 'withPost',
+                    type: 'boolean',
+                    default: true,
+                    description: 'Whether to return department information',
                 },
                 {
                     displayName: 'With Tenant IDs',
                     name: 'withTenantIds',
                     type: 'boolean',
                     default: true,
-                    description: '是否返回用户已加入的租户ID列表',
-                },
-                {
-                    displayName: 'Flat Custom Data',
-                    name: 'flatCustomData',
-                    type: 'boolean',
-                    default: false,
-                    description: '是否拍平扩展字段',
+                    description: 'Whether to return tenant ID list that the user has joined',
                 },
             ],
         },

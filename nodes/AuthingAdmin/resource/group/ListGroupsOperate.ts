@@ -12,7 +12,7 @@ const ListGroupsOperate: ResourceOperations = {
             name: 'returnAll',
             type: 'boolean',
             default: false,
-            description: '是否返回所有结果（递归获取所有分页数据）',
+            description: 'Whether to return all results or only up to a given limit',
         },
         {
             displayName: 'Limit',
@@ -21,14 +21,13 @@ const ListGroupsOperate: ResourceOperations = {
             default: 50,
             typeOptions: {
                 minValue: 1,
-                maxValue: 50
             },
             displayOptions: {
                 show: {
                     returnAll: [false],
                 },
             },
-            description: '每页返回的记录数',
+            description: 'Max number of results to return',
         },
         {
             displayName: 'Options',
@@ -41,31 +40,31 @@ const ListGroupsOperate: ResourceOperations = {
                     displayName: 'Keywords',
                     name: 'keywords',
                     type: 'string',
-                    required: false,
+
                     default: '',
                     placeholder: '例如：分组1',
                     description: '搜索分组 code 或分组名称',
-                },
-                {
-                    displayName: 'With Metadata',
-                    name: 'withMetadata',
-                    type: 'boolean',
-                    default: false,
-                    description: '是否展示元数据内容',
-                },
-                {
-                    displayName: 'With Custom Data',
-                    name: 'withCustomData',
-                    type: 'boolean',
-                    default: false,
-                    description: '是否获取自定义数据',
                 },
                 {
                     displayName: 'Flat Custom Data',
                     name: 'flatCustomData',
                     type: 'boolean',
                     default: false,
-                    description: '是否拍平扩展字段',
+                    description: 'Whether to flatten extended fields',
+                },
+                {
+                    displayName: 'With Custom Data',
+                    name: 'withCustomData',
+                    type: 'boolean',
+                    default: false,
+                    description: 'Whether to get custom data',
+                },
+                {
+                    displayName: 'With Metadata',
+                    name: 'withMetadata',
+                    type: 'boolean',
+                    default: false,
+                    description: 'Whether to display metadata content',
                 },
             ],
         },

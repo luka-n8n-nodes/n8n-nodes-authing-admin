@@ -14,7 +14,7 @@ const RemoveGroupMembersOperate: ResourceOperations = {
             required: true,
             default: '',
             placeholder: '例如：developer',
-            description: '分组 code',
+
         },
         {
             displayName: '用户 ID 数组',

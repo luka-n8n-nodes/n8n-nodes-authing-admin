@@ -14,7 +14,7 @@ const GetUsersOfPublicAccountOperate: ResourceOperations = {
             required: true,
             default: '',
             placeholder: '例如：6229ffaxxxxxxxxcade3e3d9',
-            description: '公共账号 ID',
+
         },
     ],
     async call(this: IExecuteFunctions, index: number): Promise<IDataObject | IDataObject[]> {

@@ -14,7 +14,7 @@ const GetGroupOperate: ResourceOperations = {
             required: true,
             default: '',
             placeholder: '例如：分组1',
-            description: '分组 code',
+
         },
         {
             displayName: 'Options',
@@ -28,7 +28,7 @@ const GetGroupOperate: ResourceOperations = {
                     name: 'withCustomData',
                     type: 'boolean',
                     default: false,
-                    description: '是否获取自定义数据',
+                    description: 'Whether to get custom data',
                 },
             ],
         },

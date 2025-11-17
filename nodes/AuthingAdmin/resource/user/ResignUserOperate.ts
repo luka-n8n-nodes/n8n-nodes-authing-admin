@@ -24,10 +24,10 @@ const ResignUserOperate: ResourceOperations = {
             default: {},
             options: [
                 {
-                    displayName: 'User Id Type',
+                    displayName: 'User ID Type',
                     name: 'userIdType',
                     type: 'string',
-                    required: false,
+
                     default: 'user_id',
                     placeholder: '例如：user_id',
                     description: '用户ID 类型，可选值：user_id, external_id, phone, email, username, identity, sync_relation, custom_field。默认值为 user_id',

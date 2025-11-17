@@ -14,7 +14,7 @@ const SetPublicAccountOfUsersOperate: ResourceOperations = {
             required: true,
             default: '',
             placeholder: '例如：6229ffaxxxxxxxxcade3e3d9',
-            description: '公共账号 ID',
+
         },
         {
             displayName: '用户 ID 数组',

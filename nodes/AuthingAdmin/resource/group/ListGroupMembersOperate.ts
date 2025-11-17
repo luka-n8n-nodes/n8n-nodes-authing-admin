@@ -14,14 +14,14 @@ const ListGroupMembersOperate: ResourceOperations = {
             required: true,
             default: '',
             placeholder: '例如：developer',
-            description: '分组 code',
+
         },
         {
             displayName: 'Return All',
             name: 'returnAll',
             type: 'boolean',
             default: false,
-            description: '是否返回所有结果（递归获取所有分页数据）',
+            description: 'Whether to return all results or only up to a given limit',
         },
         {
             displayName: 'Limit',
@@ -30,14 +30,13 @@ const ListGroupMembersOperate: ResourceOperations = {
             default: 50,
             typeOptions: {
                 minValue: 1,
-                maxValue: 50
             },
             displayOptions: {
                 show: {
                     returnAll: [false],
                 },
             },
-            description: '每页返回的记录数',
+            description: 'Max number of results to return',
         },
         {
             displayName: 'Options',
@@ -47,32 +46,32 @@ const ListGroupMembersOperate: ResourceOperations = {
             default: {},
             options: [
                 {
+                    displayName: 'Flat Custom Data',
+                    name: 'flatCustomData',
+                    type: 'boolean',
+                    default: false,
+                    description: 'Whether to flatten extended fields',
+                },
+                {
                     displayName: 'With Custom Data',
                     name: 'withCustomData',
                     type: 'boolean',
                     default: false,
-                    description: '是否获取自定义数据',
-                },
-                {
-                    displayName: 'With Identities',
-                    name: 'withIdentities',
-                    type: 'boolean',
-                    default: false,
-                    description: '是否获取 identities',
+                    description: 'Whether to get custom data',
                 },
                 {
                     displayName: 'With Department IDs',
                     name: 'withDepartmentIds',
                     type: 'boolean',
                     default: false,
-                    description: '是否获取部门 ID 列表',
+                    description: 'Whether to get department ID list',
                 },
                 {
-                    displayName: 'Flat Custom Data',
-                    name: 'flatCustomData',
+                    displayName: 'With Identities',
+                    name: 'withIdentities',
                     type: 'boolean',
                     default: false,
-                    description: '是否拍平扩展字段',
+                    description: 'Whether to get identities',
                 },
             ],
         },
