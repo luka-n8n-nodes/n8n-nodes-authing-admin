@@ -45,27 +45,6 @@ const ListPublicAccountsOperate: ResourceOperations = {
             default: {},
             options: [
                 {
-                    displayName: '高级搜索',
-                    name: 'advancedFilter',
-                    type: 'json',
-
-                    default: JSON.stringify(
-                        [
-                            {
-                                field: 'status',
-                                operator: 'EQUAL',
-                                value: 'Activated',
-                            },
-                        ],
-                        null,
-                        2,
-                    ),
-                    typeOptions: {
-                        rows: 5,
-                    },
-                    description: '高级搜索，JSON 格式',
-                },
-                {
                     displayName: 'Fuzzy Search On',
                     name: 'fuzzySearchOn',
                     type: 'json',
@@ -136,6 +115,27 @@ const ListPublicAccountsOperate: ResourceOperations = {
                     type: 'boolean',
                     default: true,
                     description: 'Whether to get department ID list',
+                },
+                {
+                    displayName: '高级搜索',
+                    name: 'advancedFilter',
+                    type: 'json',
+
+                    default: JSON.stringify(
+                        [
+                            {
+                                field: 'status',
+                                operator: 'EQUAL',
+                                value: 'Activated',
+                            },
+                        ],
+                        null,
+                        2,
+                    ),
+                    typeOptions: {
+                        rows: 5,
+                    },
+                    description: '高级搜索，JSON 格式',
                 },
             ],
         },

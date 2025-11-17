@@ -45,27 +45,6 @@ const ListUsersOperate: ResourceOperations = {
             default: {},
             options: [
                 {
-                    displayName: '高级搜索',
-                    name: 'advancedFilter',
-                    type: 'json',
-
-                    default: JSON.stringify(
-                        [
-                            {
-                                field: 'status',
-                                operator: 'EQUAL',
-                                value: 'Activated',
-                            },
-                        ],
-                        null,
-                        2,
-                    ),
-                    typeOptions: {
-                        rows: 5,
-                    },
-                    description: '高级搜索，JSON 格式，详见：https://api-explorer.authing.cn/?tag=tag/%E7%AE%A1%E7%90%86%E7%94%A8%E6%88%B7/API%20%E5%88%97%E8%A1%A8/operation/UsersManagementController_listUsers',
-                },
-                {
                     displayName: 'Flat Custom Data',
                     name: 'flatCustomData',
                     type: 'boolean',
@@ -171,6 +150,27 @@ const ListUsersOperate: ResourceOperations = {
                     type: 'boolean',
                     default: true,
                     description: 'Whether to return tenant ID list that the user has joined',
+                },
+                {
+                    displayName: '高级搜索',
+                    name: 'advancedFilter',
+                    type: 'json',
+
+                    default: JSON.stringify(
+                        [
+                            {
+                                field: 'status',
+                                operator: 'EQUAL',
+                                value: 'Activated',
+                            },
+                        ],
+                        null,
+                        2,
+                    ),
+                    typeOptions: {
+                        rows: 5,
+                    },
+                    description: '高级搜索，JSON 格式，详见：https://api-explorer.authing.cn/?tag=tag/%E7%AE%A1%E7%90%86%E7%94%A8%E6%88%B7/API%20%E5%88%97%E8%A1%A8/operation/UsersManagementController_listUsers',
                 },
             ],
         },
