@@ -254,7 +254,7 @@ export default NewOperate;
 
 ## 🆘 支持
 
-- 📧 邮箱：**luka.cat.mimi@gmail.com**
+- 📧 邮箱：**dengxiaomei714@gmail.com**
 - 🐛 问题反馈：[GitHub Issues](https://github.com/luka-n8n-nodes/n8n-nodes-authing-admin/issues)
 - 📖 Authing Admin API文档：[官方文档](https://api-explorer.authing.cn/)
 

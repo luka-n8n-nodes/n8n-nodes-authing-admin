@@ -1,6 +1,6 @@
 {
     "name": "@luka-cat-mimi/n8n-nodes-authing-admin",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Authing Admin N8N 凭证插件",
     "keywords": [
         "n8n",
@@ -16,8 +16,8 @@
     },
     "homepage": "https://github.com/luka-n8n-nodes/n8n-nodes-authing-admin#readme",
     "author": {
-        "name": "luka-cat",
-        "email": "luka.cat.mimi@gmail.com"
+        "name": "domi-lucky",
+        "email": "dengxiaomei714@gmail.com"
     },
     "repository": {
         "type": "git",
