@@ -1,0 +1,64 @@
+{
+    "name": "@luka-cat-mimi/n8n-nodes-authing-admin",
+    "version": "1.0.0",
+    "description": "Authing Admin N8N 凭证插件",
+    "keywords": [
+        "n8n",
+        "n8n-node",
+        "n8n-community-node-package",
+        "authing",
+        "authing-admin"
+    ],
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
+    "homepage": "https://github.com/luka-n8n-nodes/n8n-nodes-authing-admin#readme",
+    "author": {
+        "name": "luka-cat",
+        "email": "luka.cat.mimi@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/luka-n8n-nodes/n8n-nodes-authing-admin.git"
+    },
+    "engines": {
+        "node": ">=20.15"
+    },
+    "main": "index.js",
+    "scripts": {
+        "build": "npx rimraf dist && tsc && gulp build:icons",
+        "dev": "tsc --watch",
+        "format": "prettier credentials nodes --write",
+        "lint": "eslint \"credentials/**/*.ts\" \"nodes/**/*.ts\" package.json",
+        "lintfix": "eslint \"credentials/**/*.ts\" \"nodes/**/*.ts\" package.json --fix",
+        "prepublishOnly": "npm run build && npm run lint"
+    },
+    "files": [
+        "dist"
+    ],
+    "n8n": {
+        "n8nNodesApiVersion": 1,
+        "credentials": [
+            "dist/credentials/AuthingAdminApi.credentials.js"
+        ],
+        "nodes": [
+            "dist/nodes/AuthingAdmin/AuthingAdmin.node.js"
+        ]
+    },
+    "devDependencies": {
+        "@typescript-eslint/parser": "~8.32.0",
+        "eslint": "^8.57.0",
+        "eslint-plugin-n8n-nodes-base": "^1.16.3",
+        "gulp": "^5.0.0",
+        "prettier": "^3.5.3",
+        "rimraf": "^5.0.0",
+        "typescript": "^5.8.2",
+        "@types/node": "^22.13.1",
+        "glob": "^10.4.5"
+    },
+    "peerDependencies": {
+        "n8n-workflow": "*"
+    }
+}
