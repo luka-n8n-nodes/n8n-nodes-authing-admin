@@ -1,107 +1,125 @@
 import {
-    IDataObject,
-    IExecuteFunctions,
-    INodeExecutionData,
-    INodeType,
-    INodeTypeDescription,
-    NodeOperationError,
+	IDataObject,
+	IExecuteFunctions,
+	INodeExecutionData,
+	INodeType,
+	INodeTypeDescription,
+	NodeConnectionTypes,
+	NodeOperationError,
 } from 'n8n-workflow';
 import ResourceFactory from '../help/builder/ResourceFactory';
+import { configuredOutputs } from '../help/utils/parameters';
+import { Credentials, OutputType } from '../help/type/enums';
 
 const resourceBuilder = ResourceFactory.build(__dirname);
 
 export class AuthingAdmin implements INodeType {
-    description: INodeTypeDescription = {
-        displayName: 'Authing',
-        subtitle: '={{ $parameter.resource }}:{{ $parameter.operation }}',
-        name: 'authingAdmin',
-        icon: 'file:icon.svg',
-        group: ['transform'],
-        version: 1,
-        description: 'Authing Admin API集成，支持用户管理等功能',
-        defaults: {
-            name: 'Authing',
-        },
-        usableAsTool: true,
-        // @ts-ignore
-        inputs: ['main'],
-        // @ts-ignore
-        outputs: ['main'],
-        credentials: [
-            {
-                name: 'authingAdminApi',
-                required: true,
-            },
-        ],
-        properties: [...resourceBuilder.build()],
-    };
+	description: INodeTypeDescription = {
+		displayName: 'Authing',
+		subtitle: '={{ $parameter.resource }}:{{ $parameter.operation }}',
+		name: 'authingAdmin',
+		icon: 'file:icon.svg',
+		group: ['transform'],
+		version: [1],
+		defaultVersion: 1,
+		description: 'Authing Admin API集成，支持用户管理等功能',
+		defaults: {
+			name: 'Authing',
+		},
+		usableAsTool: true,
+		inputs: [NodeConnectionTypes.Main],
+		outputs: `={{(${configuredOutputs})($parameter)}}`,
+		credentials: [
+			{
+				name: Credentials.AuthingAdminApi,
+				required: true,
+			},
+		],
+		properties: [...resourceBuilder.build()],
+	};
 
-    async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-        const items = this.getInputData();
+	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
+		const items = this.getInputData();
 
-        let responseData: IDataObject = {};
-        let returnData: INodeExecutionData[] = [];
+		// 使用数组初始化，支持多输出
+		let returnData: INodeExecutionData[][] = Array.from({ length: 1 }, () => []);
 
-        const resource = this.getNodeParameter('resource', 0);
-        const operation = this.getNodeParameter('operation', 0);
+		const resource = this.getNodeParameter('resource', 0);
+		const operation = this.getNodeParameter('operation', 0);
 
-        const callFunc = resourceBuilder.getCall(resource, operation);
+		const callFunc = resourceBuilder.getCall(resource, operation);
 
-        if (!callFunc) {
-            throw new NodeOperationError(
-                this.getNode(),
-                '未实现方法: ' + resource + '.' + operation,
-            );
-        }
+		if (!callFunc) {
+			throw new NodeOperationError(
+				this.getNode(),
+				'未实现方法: ' + resource + '.' + operation,
+			);
+		}
 
-        for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
-            try {
-                this.logger.debug('call function', {
-                    resource,
-                    operation,
-                    itemIndex,
-                });
+		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
+			try {
+				this.logger.debug('call function', {
+					resource,
+					operation,
+					itemIndex,
+				});
 
-                responseData = await callFunc.call(this, itemIndex);
-            } catch (error) {
-                this.logger.error('call function error', {
-                    resource,
-                    operation,
-                    itemIndex,
-                    errorMessage: error.message,
-                    stack: error.stack,
-                });
+				const responseData = await callFunc.call(this, itemIndex);
 
-                if (this.continueOnFail()) {
-                    let errorJson = {
-                        error: error.message,
-                    };
-                    if (error.name === 'NodeApiError') {
-                        errorJson.error = error?.cause?.error;
-                    }
+				// 检查是否有自定义输出类型
+				if (responseData && typeof responseData === 'object' && 'outputType' in responseData) {
+					const typedResponse = responseData as { outputType: OutputType; outputData?: INodeExecutionData[][] };
+					const { outputType } = typedResponse;
 
-                    returnData.push({
-                        json: errorJson,
-                        pairedItem: itemIndex,
-                    });
-                    continue;
-                } else if (error.name === 'NodeApiError') {
-                    throw error;
-                } else {
-                    throw new NodeOperationError(this.getNode(), error, {
-                        message: error.message,
-                        itemIndex,
-                    });
-                }
-            }
-            const executionData = this.helpers.constructExecutionMetaData(
-                this.helpers.returnJsonArray(responseData as IDataObject),
-                { itemData: { item: itemIndex } },
-            );
-            returnData.push(...executionData);
-        }
+					if (outputType === OutputType.Multiple && typedResponse.outputData) {
+						// 多输出模式：直接使用返回的输出数据
+						returnData = typedResponse.outputData;
+					} else if (outputType === OutputType.None) {
+						// 无输出模式
+						return [];
+					}
+					// OutputType.Single 会走下面的默认处理
+				} else {
+					// 默认单输出模式
+					const executionData = this.helpers.constructExecutionMetaData(
+						this.helpers.returnJsonArray(responseData as IDataObject),
+						{ itemData: { item: itemIndex } },
+					);
+					returnData[0].push(...executionData);
+				}
+			} catch (error) {
+				this.logger.error('call function error', {
+					resource,
+					operation,
+					itemIndex,
+					errorMessage: error.message,
+					stack: error.stack,
+				});
 
-        return [returnData];
-    }
+				if (this.continueOnFail()) {
+					// 优化错误信息提取，优先使用 description
+					const executionErrorData = this.helpers.constructExecutionMetaData(
+						this.helpers.returnJsonArray({
+							error: error.description ?? error.message,
+							...(error.name === 'NodeApiError' && error.cause?.error
+								? { details: error.cause.error }
+								: {}),
+						}),
+						{ itemData: { item: itemIndex } },
+					);
+					returnData[0].push(...executionErrorData);
+					continue;
+				} else if (error.name === 'NodeApiError') {
+					throw error;
+				} else {
+					throw new NodeOperationError(this.getNode(), error, {
+						message: error.message,
+						itemIndex,
+					});
+				}
+			}
+		}
+
+		return returnData;
+	}
 }
-
