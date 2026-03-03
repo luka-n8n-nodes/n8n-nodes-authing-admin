@@ -444,7 +444,7 @@ const UpdateUserOperate: ResourceOperations = {
             ];
 
             basicFields.forEach((field) => {
-                if (opts[field] !== undefined && opts[field] !== null && opts[field] !== '') {
+                if (opts[field] !== undefined) {
                     requestBody[field] = opts[field];
                 }
             });
