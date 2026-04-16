@@ -1,7 +1,9 @@
 import {
 	IDataObject,
 	IExecuteFunctions,
+	ILoadOptionsFunctions,
 	INodeExecutionData,
+	INodePropertyOptions,
 	INodeType,
 	INodeTypeDescription,
 	NodeConnectionTypes,
@@ -14,6 +16,64 @@ import { Credentials, OutputType } from '../help/type/enums';
 const resourceBuilder = ResourceFactory.build(__dirname);
 
 export class AuthingAdmin implements INodeType {
+	methods = {
+		loadOptions: {
+			async getGroups(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				try {
+					const credentials = await this.getCredentials('authingAdminApi');
+					const baseUrl = credentials.baseUrl as string;
+					const accessKeyId = credentials.accessKeyId as string;
+					const accessKeySecret = credentials.accessKeySecret as string;
+
+					const tokenResponse = await this.helpers.httpRequest({
+						method: 'POST',
+						url: `${baseUrl}/api/v3/get-management-token`,
+						body: { accessKeyId, accessKeySecret },
+						json: true,
+					}) as any;
+
+					const accessToken = tokenResponse?.data?.access_token;
+					if (!accessToken) {
+						const errMsg = tokenResponse?.message || JSON.stringify(tokenResponse);
+						return [{ name: `[Token错误] ${errMsg}`, value: '_token_error_' }];
+					}
+
+					const PAGE_SIZE = 50;
+					let page = 1;
+					let allGroups: any[] = [];
+
+					while (true) {
+						const response = await this.helpers.httpRequest({
+							method: 'GET',
+							url: `${baseUrl}/api/v3/list-groups`,
+							qs: { page, limit: PAGE_SIZE },
+							headers: {
+								'x-authing-userpool-id': accessKeyId,
+								'authorization': accessToken,
+							},
+							json: true,
+						}) as any;
+
+						const list: any[] = response?.data?.list || [];
+						const totalCount: number = response?.data?.totalCount || 0;
+						allGroups = allGroups.concat(list);
+
+						if (allGroups.length >= totalCount || list.length === 0) break;
+						page++;
+					}
+
+					return allGroups.map((group) => ({
+						name: group.name,
+						value: group.code,
+						description: `分组唯一code：${group.code}`,
+					}));
+				} catch (e: any) {
+					return [{ name: `[异常] ${e.message || String(e)}`, value: '_exception_' }];
+				}
+			},
+		},
+	};
+
 	description: INodeTypeDescription = {
 		displayName: 'Authing',
 		subtitle: '={{ $parameter.resource }}:{{ $parameter.operation }}',

@@ -8,37 +8,20 @@ const DeleteGroupsBatchOperate: ResourceOperations = {
     action: '批量删除分组',
     options: [
         {
-            displayName: '分组 Code 列表',
+            displayName: '分组 Code',
             name: 'codeList',
-            type: 'json',
+            type: 'multiOptions',
             required: true,
-            default: JSON.stringify(['code1'], null, 2),
+            default: [],
             typeOptions: {
-                rows: 3,
+                loadOptionsMethod: 'getGroups',
             },
-            placeholder: '例如：["code1", "code2"]',
-            description: '分组 code 列表，JSON 数组格式',
         },
     ],
     async call(this: IExecuteFunctions, index: number): Promise<IDataObject | IDataObject[]> {
-        const codeListData = this.getNodeParameter('codeList', index, '') as string | string[];
+        const codeList = this.getNodeParameter('codeList', index, []) as string[];
 
-        // 处理 codeList 数组
-        let codeList: string[] = [];
-        if (codeListData) {
-            try {
-                const parsed = typeof codeListData === 'string'
-                    ? JSON.parse(codeListData)
-                    : codeListData;
-                if (Array.isArray(parsed) && parsed.length > 0) {
-                    codeList = parsed.filter((code) => code && typeof code === 'string' && code.trim() !== '');
-                }
-            } catch (error: any) {
-                throw new Error(`Invalid JSON in codeList: ${error.message || error}`);
-            }
-        }
-
-        if (codeList.length === 0) {
+        if (!codeList.length) {
             throw new Error('分组 code 列表不能为空');
         }
 

@@ -10,11 +10,12 @@ const UpdateGroupOperate: ResourceOperations = {
         {
             displayName: '分组 Code',
             name: 'code',
-            type: 'string',
+            type: 'options',
             required: true,
             default: '',
-            placeholder: '例如：developer',
-
+            typeOptions: {
+                loadOptionsMethod: 'getGroups',
+            },
         },
         {
             displayName: '分组描述',

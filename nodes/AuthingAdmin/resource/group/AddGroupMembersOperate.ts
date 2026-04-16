@@ -10,11 +10,12 @@ const AddGroupMembersOperate: ResourceOperations = {
         {
             displayName: '分组 Code',
             name: 'code',
-            type: 'string',
+            type: 'options',
             required: true,
             default: '',
-            placeholder: '例如：developer',
-
+            typeOptions: {
+                loadOptionsMethod: 'getGroups',
+            },
         },
         {
             displayName: '用户 ID 数组',
