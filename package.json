@@ -28,11 +28,11 @@
     },
     "main": "index.js",
     "scripts": {
-        "build": "npx rimraf dist && tsc && gulp build:icons",
-        "dev": "tsc --watch",
+        "build": "n8n-node build",
+        "dev": "n8n-node dev",
         "format": "prettier credentials nodes --write",
-        "lint": "eslint \"credentials/**/*.ts\" \"nodes/**/*.ts\" package.json",
-        "lintfix": "eslint \"credentials/**/*.ts\" \"nodes/**/*.ts\" package.json --fix",
+        "lint": "n8n-node lint",
+        "lintfix": "n8n-node lint --fix",
         "prepublishOnly": "npm run build && npm run lint"
     },
     "files": [
@@ -48,15 +48,12 @@
         ]
     },
     "devDependencies": {
-        "@types/node": "^20.0.0",
-        "@n8n/node-cli": "*",
-        "eslint": "9.32.0",
-        "prettier": "3.6.2",
+        "@n8n/node-cli": "^0.23.1",
+        "@types/node": "^20.19.37",
+        "eslint": "9.39.4",
+        "prettier": "3.8.1",
         "release-it": "^19.0.4",
-        "typescript": "5.9.2",
-        "glob": "^10.4.5",
-        "gulp": "^5.0.0",
-        "require-glob": "^4.1.0"
+        "typescript": "5.9.3"
     },
     "peerDependencies": {
         "n8n-workflow": "*"
