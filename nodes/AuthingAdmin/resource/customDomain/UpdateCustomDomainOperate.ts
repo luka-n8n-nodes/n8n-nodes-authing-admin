@@ -27,7 +27,7 @@ const UpdateCustomDomainOperate: ResourceOperations = {
             default: '',
             placeholder: 'BEGIN RSA PRIVATE KEY ... END RSA PRIVATE KEY-----',
             typeOptions: {
-                password: true,
+                rows: 5,
             },
             description: 'HTTPS 证书私钥内容',
         },

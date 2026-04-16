@@ -29,7 +29,7 @@ const GetAllDepartmentsOperate: ResourceOperations = {
                     type: 'string',
                     default: '',
                     placeholder: '例如：root',
-                    description: 'Department ID. Defaults to the root department ID if not specified',
+                    description: 'Department ID. Defaults to the root department ID if not specified.',
                 },
                 {
                     displayName: '部门 ID 类型',
@@ -38,11 +38,11 @@ const GetAllDepartmentsOperate: ResourceOperations = {
                     default: 'department_id',
                     options: [
                         {
-                            name: 'department_id',
+                            name: 'Department_id',
                             value: 'department_id',
                         },
                         {
-                            name: 'open_department_id',
+                            name: 'Open_department_id',
                             value: 'open_department_id',
                         },
                     ],

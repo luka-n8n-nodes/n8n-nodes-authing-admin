@@ -14,7 +14,7 @@ const GetDepartmentOperate: ResourceOperations = {
             required: true,
             default: '',
             placeholder: '例如：root',
-            description: 'Department ID. Use "root" for the root department',
+            description: 'Department ID. Use "root" for the root department.',
         },
         {
             displayName: 'Options',
@@ -24,7 +24,7 @@ const GetDepartmentOperate: ResourceOperations = {
             default: {},
             options: [
                 {
-                    displayName: '组织 code',
+                    displayName: '组织 Code',
                     name: 'organizationCode',
                     type: 'string',
                     default: '',
@@ -32,7 +32,7 @@ const GetDepartmentOperate: ResourceOperations = {
                     description: 'The unique code of the organization',
                 },
                 {
-                    displayName: '部门 code',
+                    displayName: '部门 Code',
                     name: 'departmentCode',
                     type: 'string',
                     default: '',
@@ -45,11 +45,11 @@ const GetDepartmentOperate: ResourceOperations = {
                     type: 'options',
                     default: 'department_id',
                     options: [
-                        { name: 'department_id', value: 'department_id' },
-                        { name: 'open_department_id', value: 'open_department_id' },
-                        { name: 'sync_relation', value: 'sync_relation' },
-                        { name: 'custom_field', value: 'custom_field' },
-                        { name: 'code', value: 'code' },
+                        { name: 'Code', value: 'code' },
+                        { name: 'Custom_field', value: 'custom_field' },
+                        { name: 'Department_id', value: 'department_id' },
+                        { name: 'Open_department_id', value: 'open_department_id' },
+                        { name: 'Sync_relation', value: 'sync_relation' },
                     ],
                     description: 'The type of department ID used in this request',
                 },
@@ -73,7 +73,7 @@ const GetDepartmentOperate: ResourceOperations = {
                     type: 'string',
                     default: '',
                     placeholder: 'e.g. 623c20b2a062aaaaf41b17da',
-                    description: 'Tenant ID',
+
                 },
             ],
         },
