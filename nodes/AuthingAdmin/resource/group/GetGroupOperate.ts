@@ -8,8 +8,10 @@ const GetGroupOperate: ResourceOperations = {
     action: '获取分组详情',
     options: [
         {
+            // eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
             displayName: '分组 Code',
             name: 'code',
+            // eslint-disable-next-line n8n-nodes-base/node-param-description-missing-from-dynamic-options
             type: 'options',
             required: true,
             default: '',

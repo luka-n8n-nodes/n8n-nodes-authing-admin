@@ -8,8 +8,10 @@ const DeleteGroupsBatchOperate: ResourceOperations = {
     action: '批量删除分组',
     options: [
         {
+            // eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-multi-options
             displayName: '分组 Code',
             name: 'codeList',
+            // eslint-disable-next-line n8n-nodes-base/node-param-description-missing-from-dynamic-multi-options
             type: 'multiOptions',
             required: true,
             default: [],
