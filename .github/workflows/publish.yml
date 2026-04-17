@@ -50,7 +50,7 @@ jobs:
 
       # OIDC Trusted Publishing 需要 npm 11.5.1+
       - name: 📦 升级 npm 版本
-        run: npm install -g npm@latest
+        run: npm install -g npm@11.5.1
 
       - name: 📦 安装依赖
         run: npm ci
