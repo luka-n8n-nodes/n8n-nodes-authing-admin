@@ -69,10 +69,6 @@ const GetAllDepartmentsOperate: ResourceOperations = {
         const organizationCode = this.getNodeParameter('organizationCode', index, '') as string;
         const options = this.getNodeParameter('options', index, {}) as IDataObject;
 
-        if (!organizationCode || organizationCode.trim() === '') {
-            throw new Error('Organization code is required and cannot be empty');
-        }
-
         const qs: IDataObject = { organizationCode };
 
         if (options.departmentId !== undefined && options.departmentId !== '') {

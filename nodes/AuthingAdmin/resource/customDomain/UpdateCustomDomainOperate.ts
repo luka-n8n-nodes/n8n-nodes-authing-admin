@@ -36,13 +36,6 @@ const UpdateCustomDomainOperate: ResourceOperations = {
         const httpsCertificate = this.getNodeParameter('httpsCertificate', index, '') as string;
         const httpsPrivateKey = this.getNodeParameter('httpsPrivateKey', index, '') as string;
 
-        if (!httpsCertificate || httpsCertificate.trim() === '') {
-            throw new Error('HTTPS 证书不能为空');
-        }
-        if (!httpsPrivateKey || httpsPrivateKey.trim() === '') {
-            throw new Error('HTTPS 证书私钥不能为空');
-        }
-
         const response = await RequestUtils.request.call(this, {
             method: 'POST',
             url: '/api/v3/update-custom-domain',
