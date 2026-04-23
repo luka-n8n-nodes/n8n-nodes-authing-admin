@@ -105,7 +105,7 @@ const ListUsersOperate: ResourceOperations = {
                         [
                             {
                                 field: 'createdAt',
-                                direction: 'desc',
+                                order: 'desc',
                             },
                         ],
                         null,
@@ -114,7 +114,7 @@ const ListUsersOperate: ResourceOperations = {
                     typeOptions: {
                         rows: 5,
                     },
-                    description: '排序设置，可以设置多项按照多个字段进行排序（field: 排序字段, direction: 排序方向 desc/asc）',
+                    description: '排序设置（与 Authing API 一致：每项使用 field + order，order 为 desc 或 asc）',
                 },
                 {
                     displayName: 'With Custom Data',
@@ -182,8 +182,8 @@ const ListUsersOperate: ResourceOperations = {
         const keywords = this.getNodeParameter('keywords', index, '') as string;
         const options = this.getNodeParameter('options', index, {}) as IDataObject;
 
-        // 统一的请求函数
-        const fetchPage = async (pageNum: number, pageSize: number) => {
+        // 统一的请求函数；applyReturnAllSort 为 true 且用户未在 Options 里配置 sort 时，再在 options 中追加 id 降序 sort（returnAll 分页稳定排序）
+        const fetchPage = async (pageNum: number, pageSize: number, applyReturnAllSort = false) => {
             const requestOptions: IHttpRequestOptions = {
                 method: 'POST',
                 url: '/api/v3/list-users',
@@ -260,14 +260,15 @@ const ListUsersOperate: ResourceOperations = {
                             ? JSON.parse(opts.sort)
                             : opts.sort;
                         if (Array.isArray(parsed) && parsed.length > 0) {
+                            // Authing API 只认 field + order；请求体里不再发送 direction
                             const sortArray = parsed.map((item: any) => {
-                                if (item.direction) {
-                                    return {
-                                        field: item.field,
-                                        direction: item.direction,
-                                    };
+                                if (typeof item !== 'object' || item === null || !item.field) {
+                                    return item;
                                 }
-                                return item;
+                                const raw = item.order ?? 'desc';
+                                const lo = String(raw).toLowerCase();
+                                const order = lo === 'asc' ? 'asc' : 'desc';
+                                return { field: item.field, order };
                             });
                             optionsObj.sort = sortArray;
                         }
@@ -306,6 +307,10 @@ const ListUsersOperate: ResourceOperations = {
                 };
             }
 
+            if (applyReturnAllSort && !optionsObj.sort) {
+                optionsObj.sort = [{ field: 'id', order: 'desc' }];
+            }
+
             if (Object.keys(optionsObj).length > 0) {
                 requestBody.options = optionsObj;
             }
@@ -334,7 +339,7 @@ const ListUsersOperate: ResourceOperations = {
             const pageSize = Math.min(limit || 50, 50);
 
             while (true) {
-                const { data, total } = await fetchPage(pageNum, pageSize);
+                const { data, total } = await fetchPage(pageNum, pageSize, true);
                 allResults = allResults.concat(data);
 
                 // 检查是否还有更多数据
