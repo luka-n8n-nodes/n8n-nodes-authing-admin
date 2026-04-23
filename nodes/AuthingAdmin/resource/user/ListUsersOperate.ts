@@ -99,22 +99,67 @@ const ListUsersOperate: ResourceOperations = {
                 {
                     displayName: 'Sort',
                     name: 'sort',
-                    type: 'json',
-
-                    default: JSON.stringify(
-                        [
-                            {
-                                field: 'createdAt',
-                                order: 'desc',
-                            },
-                        ],
-                        null,
-                        2,
-                    ),
+                    type: 'fixedCollection',
                     typeOptions: {
-                        rows: 5,
+                        multipleValues: false,
                     },
-                    description: '排序设置（与 Authing API 一致：每项使用 field + order，order 为 desc 或 asc）',
+                    placeholder: 'Configure',
+                    default: {
+                        sortPair: {
+                            field: 'createdAt',
+                            order: 'desc',
+                        },
+                    },
+                    options: [
+                        {
+                            name: 'sortPair',
+                            displayName: 'Sort',
+                            values: [
+                                {
+                                    displayName: 'Field',
+                                    name: 'field',
+                                    type: 'options',
+                                    noDataExpression: true,
+                                    default: 'createdAt',
+                                    description: '与 Authing list-users 文档一致的可排序字段',
+                                    options: [
+                                        { name: 'Created At', value: 'createdAt' },
+                                        { name: 'Email', value: 'email' },
+                                        { name: 'External ID', value: 'externalId' },
+                                        { name: 'Gender', value: 'gender' },
+                                        { name: 'ID', value: 'id' },
+                                        { name: 'Last IP', value: 'lastIp' },
+                                        { name: 'Last Login', value: 'lastLogin' },
+                                        { name: 'Last MFA Time', value: 'lastMfaTime' },
+                                        { name: 'Logins Count', value: 'loginsCount' },
+                                        { name: 'Password Last Set At', value: 'passwordLastSetAt' },
+                                        { name: 'Password Security Level', value: 'passwordSecurityLevel' },
+                                        { name: 'Phone', value: 'phone' },
+                                        { name: 'Phone Country Code', value: 'phoneCountryCode' },
+                                        { name: 'Status', value: 'status' },
+                                        { name: 'Status Changed At', value: 'statusChangedAt' },
+                                        { name: 'Updated At', value: 'updatedAt' },
+                                        { name: 'User Source Type', value: 'userSourceType' },
+                                        { name: 'Username', value: 'username' },
+                                    ],
+                                },
+                                {
+                                    displayName: 'Order',
+                                    name: 'order',
+                                    type: 'options',
+                                    noDataExpression: true,
+                                    default: 'desc',
+                                    description: '排序方向：desc 降序，asc 升序',
+                                    options: [
+                                        { name: 'Asc', value: 'asc' },
+                                        { name: 'Desc', value: 'desc' },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                    description:
+                        'Field 与 Order 为一组同时出现/移除；去掉排序请从 Options 移除整项 Sort。对应 Authing options.sort 单条 { field, order }',
                 },
                 {
                     displayName: 'With Custom Data',
@@ -181,6 +226,11 @@ const ListUsersOperate: ResourceOperations = {
 
         const keywords = this.getNodeParameter('keywords', index, '') as string;
         const options = this.getNodeParameter('options', index, {}) as IDataObject;
+
+        const normalizeSortOrder = (raw: unknown): 'asc' | 'desc' => {
+            const lo = String(raw ?? 'desc').toLowerCase();
+            return lo === 'asc' ? 'asc' : 'desc';
+        };
 
         // 统一的请求函数；applyReturnAllSort 为 true 且用户未在 Options 里配置 sort 时，再在 options 中追加 id 降序 sort（returnAll 分页稳定排序）
         const fetchPage = async (pageNum: number, pageSize: number, applyReturnAllSort = false) => {
@@ -253,28 +303,69 @@ const ListUsersOperate: ResourceOperations = {
                     }
                 }
 
-                // 处理 sort
+                // 处理 sort：fixedCollection 存为 { sortPair: { field, order } }；兼容旧版扁平 collection、sortRule / sortRules / JSON 数组
+                let sortSingle: { field: string; order: 'asc' | 'desc' } | null = null;
                 if (opts.sort) {
-                    try {
-                        const parsed = typeof opts.sort === 'string'
-                            ? JSON.parse(opts.sort)
-                            : opts.sort;
-                        if (Array.isArray(parsed) && parsed.length > 0) {
-                            // Authing API 只认 field + order；请求体里不再发送 direction
-                            const sortArray = parsed.map((item: any) => {
-                                if (typeof item !== 'object' || item === null || !item.field) {
-                                    return item;
+                    if (typeof opts.sort === 'string') {
+                        try {
+                            const parsed = JSON.parse(opts.sort);
+                            if (Array.isArray(parsed) && parsed.length > 0) {
+                                const item = parsed[0];
+                                if (typeof item === 'object' && item !== null && item.field) {
+                                    sortSingle = {
+                                        field: item.field,
+                                        order: normalizeSortOrder(item.order),
+                                    };
                                 }
-                                const raw = item.order ?? 'desc';
-                                const lo = String(raw).toLowerCase();
-                                const order = lo === 'asc' ? 'asc' : 'desc';
-                                return { field: item.field, order };
-                            });
-                            optionsObj.sort = sortArray;
+                            }
+                        } catch (error) {
+                            throw new Error(`Invalid JSON in sort: ${error.message}`);
                         }
-                    } catch (error) {
-                        throw new Error(`Invalid JSON in sort: ${error.message}`);
+                    } else if (typeof opts.sort === 'object' && opts.sort !== null) {
+                        const so = opts.sort as IDataObject;
+                        const pairFromObject = (obj: unknown) => {
+                            if (!obj || typeof obj !== 'object') return;
+                            const o = obj as IDataObject;
+                            if (typeof o.field === 'string' && o.field.trim() !== '') {
+                                sortSingle = {
+                                    field: o.field,
+                                    order: normalizeSortOrder(o.order),
+                                };
+                            }
+                        };
+                        const sp = so.sortPair;
+                        if (Array.isArray(sp) && sp.length > 0) {
+                            pairFromObject(sp[0]);
+                        } else {
+                            pairFromObject(sp);
+                        }
+                        if (!sortSingle && typeof so.field === 'string' && so.field.trim() !== '') {
+                            sortSingle = {
+                                field: so.field,
+                                order: normalizeSortOrder(so.order),
+                            };
+                        }
+                        if (!sortSingle) {
+                            const rule = so.sortRule as IDataObject | undefined;
+                            if (rule && typeof rule.field === 'string' && rule.field.trim() !== '') {
+                                sortSingle = {
+                                    field: rule.field,
+                                    order: normalizeSortOrder(rule.order),
+                                };
+                            } else if (Array.isArray(so.sortRules) && (so.sortRules as any[]).length > 0) {
+                                const item = (so.sortRules as any[])[0];
+                                if (typeof item === 'object' && item !== null && item.field) {
+                                    sortSingle = {
+                                        field: item.field,
+                                        order: normalizeSortOrder(item.order),
+                                    };
+                                }
+                            }
+                        }
                     }
+                }
+                if (sortSingle) {
+                    optionsObj.sort = [sortSingle];
                 }
 
                 // 处理 boolean 选项
