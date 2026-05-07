@@ -6,6 +6,7 @@ const ListDepartmentMembersOperate: ResourceOperations = {
     name: '获取部门成员列表',
     value: 'listDepartmentMembers',
     action: '获取部门成员列表',
+    order: 100,
     options: [
         {
             displayName: '组织 Code',

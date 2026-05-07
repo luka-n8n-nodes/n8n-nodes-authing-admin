@@ -6,6 +6,7 @@ const UpdateGroupOperate: ResourceOperations = {
     name: '修改分组',
     value: 'updateGroup',
     action: '修改分组',
+    order: 300,
     options: [
         {
             // eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options

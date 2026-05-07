@@ -6,6 +6,7 @@ const ListUsersOperate: ResourceOperations = {
     name: '获取/搜索用户列表',
     value: 'listUsers',
     action: '获取/搜索用户列表',
+    order: 600,
     options: [
         {
             displayName: '模糊搜索关键字',

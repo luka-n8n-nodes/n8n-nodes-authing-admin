@@ -6,6 +6,7 @@ const CreateOrUpdateGroupOperate: ResourceOperations = {
     name: '创建或修改分组',
     value: 'createOrUpdateGroup',
     action: '创建或修改分组',
+    order: 500,
     options: [
         {
             displayName: '分组 Code',

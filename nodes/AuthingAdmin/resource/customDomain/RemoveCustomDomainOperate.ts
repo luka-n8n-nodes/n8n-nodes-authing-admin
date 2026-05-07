@@ -6,6 +6,7 @@ const RemoveCustomDomainOperate: ResourceOperations = {
     name: '移除自定义域名',
     value: 'removeCustomDomain',
     action: '移除自定义域名',
+    order: 100,
     options: [],
     async call(this: IExecuteFunctions, index: number): Promise<IDataObject | IDataObject[]> {
         const response = await RequestUtils.request.call(this, {

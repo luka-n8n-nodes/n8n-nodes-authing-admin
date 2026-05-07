@@ -6,6 +6,7 @@ const ListGroupMembersOperate: ResourceOperations = {
     name: '获取分组成员列表',
     value: 'listGroupMembers',
     action: '获取分组成员列表',
+    order: 800,
     options: [
         {
             // eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options

@@ -6,6 +6,7 @@ const UpdateUserOperate: ResourceOperations = {
     name: '修改用户资料',
     value: 'updateUser',
     action: '修改用户资料',
+    order: 300,
     options: [
         {
             displayName: '用户ID',

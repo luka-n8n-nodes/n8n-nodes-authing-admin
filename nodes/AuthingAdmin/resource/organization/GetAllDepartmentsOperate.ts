@@ -6,6 +6,7 @@ const GetAllDepartmentsOperate: ResourceOperations = {
     name: '获取所有部门列表',
     value: 'getAllDepartments',
     action: '获取所有部门列表',
+    order: 300,
     options: [
         {
             displayName: '组织 Code',

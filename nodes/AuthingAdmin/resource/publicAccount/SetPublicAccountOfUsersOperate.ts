@@ -6,6 +6,7 @@ const SetPublicAccountOfUsersOperate: ResourceOperations = {
     name: '公共账号绑定批量用户',
     value: 'setPublicAccountOfUsers',
     action: '公共账号绑定批量用户',
+    order: 100,
     options: [
         {
             displayName: '公共账号 ID',

@@ -6,6 +6,7 @@ const GetCustomDomainOperate: ResourceOperations = {
     name: '获取自定义域名',
     value: 'getCustomDomain',
     action: '获取自定义域名',
+    order: 600,
     options: [],
     async call(this: IExecuteFunctions, index: number): Promise<IDataObject | IDataObject[]> {
         const response = await RequestUtils.request.call(this, {

@@ -6,6 +6,7 @@ const ListPublicAccountsOperate: ResourceOperations = {
     name: '获取/搜索公共账号列表',
     value: 'listPublicAccounts',
     action: '获取/搜索公共账号列表',
+    order: 300,
     options: [
         {
             displayName: '模糊搜索关键字',

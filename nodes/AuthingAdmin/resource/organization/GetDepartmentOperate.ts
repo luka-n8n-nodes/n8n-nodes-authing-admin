@@ -6,6 +6,7 @@ const GetDepartmentOperate: ResourceOperations = {
     name: '获取部门信息',
     value: 'getDepartment',
     action: '获取部门信息',
+    order: 200,
     options: [
         {
             displayName: '部门 ID',

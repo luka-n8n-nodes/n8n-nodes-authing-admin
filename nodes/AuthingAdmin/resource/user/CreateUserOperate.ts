@@ -6,6 +6,7 @@ const CreateUserOperate: ResourceOperations = {
     name: '创建用户',
     value: 'createUser',
     action: '创建用户',
+    order: 400,
     options: [
         {
             displayName: 'Options',

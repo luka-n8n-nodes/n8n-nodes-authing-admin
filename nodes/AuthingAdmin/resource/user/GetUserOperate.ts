@@ -6,6 +6,7 @@ const GetUserOperate: ResourceOperations = {
     name: '获取用户信息',
     value: 'getUser',
     action: '获取用户信息',
+    order: 500,
     options: [
         {
             displayName: '用户ID',

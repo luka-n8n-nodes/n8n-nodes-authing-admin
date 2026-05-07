@@ -6,6 +6,7 @@ const UpdateCustomDomainOperate: ResourceOperations = {
     name: '更新自定义域名',
     value: 'updateCustomDomain',
     action: '更新自定义域名',
+    order: 400,
     options: [
         {
             displayName: '证书',

@@ -6,6 +6,7 @@ const GetGroupOperate: ResourceOperations = {
     name: '获取分组详情',
     value: 'getGroup',
     action: '获取分组详情',
+    order: 700,
     options: [
         {
             // eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options

@@ -6,6 +6,7 @@ const ResignUserOperate: ResourceOperations = {
     name: '离职用户',
     value: 'resignUser',
     action: '离职用户',
+    order: 100,
     options: [
         {
             displayName: '用户ID',

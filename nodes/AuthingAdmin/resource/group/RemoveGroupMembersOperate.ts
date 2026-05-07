@@ -6,6 +6,7 @@ const RemoveGroupMembersOperate: ResourceOperations = {
     name: '批量移除分组成员',
     value: 'removeGroupMembers',
     action: '批量移除分组成员',
+    order: 100,
     options: [
         {
             // eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options

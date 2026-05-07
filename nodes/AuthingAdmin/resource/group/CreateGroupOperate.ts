@@ -6,6 +6,7 @@ const CreateGroupOperate: ResourceOperations = {
     name: '创建分组',
     value: 'createGroup',
     action: '创建分组',
+    order: 600,
     options: [
         {
             displayName: '分组 Code',

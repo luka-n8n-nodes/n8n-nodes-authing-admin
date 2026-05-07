@@ -6,6 +6,7 @@ const AddGroupMembersOperate: ResourceOperations = {
     name: '添加分组成员',
     value: 'addGroupMembers',
     action: '添加分组成员',
+    order: 400,
     options: [
         {
             // eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options

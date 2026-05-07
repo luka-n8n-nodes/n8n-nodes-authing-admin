@@ -6,6 +6,7 @@ const ListGroupsOperate: ResourceOperations = {
     name: '获取分组列表',
     value: 'listGroups',
     action: '获取分组列表',
+    order: 900,
     options: [
         {
             displayName: 'Return All',

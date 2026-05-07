@@ -6,6 +6,7 @@ const CreateCustomDomainOperate: ResourceOperations = {
     name: '创建自定义域名',
     value: 'createCustomDomain',
     action: '创建自定义域名',
+    order: 500,
     options: [
         {
             displayName: '自定义域名',

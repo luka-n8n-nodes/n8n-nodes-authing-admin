@@ -6,6 +6,7 @@ const VerifyCustomDomainHttpsOperate: ResourceOperations = {
     name: '验证域名 HTTPS 归属',
     value: 'verifyCustomDomainHttps',
     action: '验证域名 HTTPS 归属',
+    order: 200,
     options: [],
     async call(this: IExecuteFunctions, index: number): Promise<IDataObject | IDataObject[]> {
         const response = await RequestUtils.request.call(this, {

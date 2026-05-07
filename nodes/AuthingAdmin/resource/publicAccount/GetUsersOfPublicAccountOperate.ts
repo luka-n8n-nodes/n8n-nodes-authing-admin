@@ -6,6 +6,7 @@ const GetUsersOfPublicAccountOperate: ResourceOperations = {
     name: '公共账号的用户列表',
     value: 'getUsersOfPublicAccount',
     action: '公共账号的用户列表',
+    order: 200,
     options: [
         {
             displayName: '公共账号 ID',

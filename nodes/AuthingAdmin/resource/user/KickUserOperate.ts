@@ -6,6 +6,7 @@ const KickUserOperate: ResourceOperations = {
     name: '强制下线用户',
     value: 'kickUser',
     action: '强制下线用户',
+    order: 200,
     options: [
         {
             displayName: '用户ID',

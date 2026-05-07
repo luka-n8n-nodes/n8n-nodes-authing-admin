@@ -6,6 +6,7 @@ const DeleteGroupsBatchOperate: ResourceOperations = {
     name: '批量删除分组',
     value: 'deleteGroupsBatch',
     action: '批量删除分组',
+    order: 200,
     options: [
         {
             // eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-multi-options
