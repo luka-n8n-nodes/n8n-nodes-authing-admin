@@ -23,12 +23,43 @@ export class AuthingAdminApi implements ICredentialType {
             description: 'Authing API 基础地址（默认：https://console.authing.cn）',
         },
         {
+            displayName: '管理员角色',
+            name: 'role',
+            type: 'options',
+            options: [
+                {
+                    name: '超级管理员',
+                    value: 'superAdmin',
+                },
+                {
+                    name: '协作管理员',
+                    value: 'collaboratorAdmin',
+                },
+            ],
+            default: 'superAdmin',
+            required: true,
+            description: '选择凭证对应的管理员角色类型',
+        },
+        {
+            displayName: '用户池 ID',
+            name: 'userPoolId',
+            type: 'string',
+            default: '',
+            required: true,
+            displayOptions: {
+                show: {
+                    role: ['collaboratorAdmin'],
+                },
+            },
+            description: '协作管理员所属的用户池 ID',
+        },
+        {
             displayName: 'AccessKey ID',
             name: 'accessKeyId',
             type: 'string',
             default: '',
             required: true,
-            description: '如果是以用户池全局 AK/SK 初始化，为用户池 ID;如果是以协作管理员的 AK/SK 初始化，为协作管理员的 AccessKey ID。',
+            description: '超级管理员模式下为用户池 ID；协作管理员模式下为 AccessKey ID。',
         },
         {
             displayName: 'AccessKey Secret',
@@ -39,7 +70,7 @@ export class AuthingAdminApi implements ICredentialType {
             },
             default: '',
             required: true,
-            description: '如果是以用户池全局 AK/SK 初始化，为用户池密钥；如果是以协作管理员的 AK/SK 初始化，为协作管理员的 SK。',
+            description: '超级管理员模式下为用户池密钥；协作管理员模式下为 AccessKey Secret。',
         },
         {
             displayName: 'AccessToken',
@@ -57,7 +88,7 @@ export class AuthingAdminApi implements ICredentialType {
         type: 'generic',
         properties: {
             headers: {
-                'x-authing-userpool-id': '={{$credentials.accessKeyId}}',
+                'x-authing-userpool-id': '={{ $credentials.role === "collaboratorAdmin" ? $credentials.userPoolId : $credentials.accessKeyId }}',
                 'authorization': '={{$credentials.accessToken}}',
             },
         },

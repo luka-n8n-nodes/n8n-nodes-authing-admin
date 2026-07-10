@@ -10,6 +10,7 @@ import {
 	NodeOperationError,
 } from 'n8n-workflow';
 import ResourceFactory from '../help/builder/ResourceFactory';
+import { getUserPoolId } from '../help/utils/CredentialUtils';
 import { configuredOutputs } from '../help/utils/parameters';
 import { Credentials, OutputType } from '../help/type/enums';
 
@@ -24,6 +25,7 @@ export class AuthingAdmin implements INodeType {
 					const baseUrl = credentials.baseUrl as string;
 					const accessKeyId = credentials.accessKeyId as string;
 					const accessKeySecret = credentials.accessKeySecret as string;
+					const userPoolId = getUserPoolId(credentials);
 
 					// eslint-disable-next-line @n8n/community-nodes/no-http-request-with-manual-auth
 					const tokenResponse = await this.helpers.httpRequest({
@@ -50,7 +52,7 @@ export class AuthingAdmin implements INodeType {
 							url: `${baseUrl}/api/v3/list-groups`,
 							qs: { page, limit: PAGE_SIZE },
 							headers: {
-								'x-authing-userpool-id': accessKeyId,
+								'x-authing-userpool-id': userPoolId,
 								'authorization': accessToken,
 							},
 							json: true,
