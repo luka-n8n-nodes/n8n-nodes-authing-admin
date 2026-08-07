@@ -25,10 +25,7 @@ export class AuthingAdmin implements INodeType {
 					const baseUrl = credentials.baseUrl as string;
 					const accessKeyId = credentials.accessKeyId as string;
 					const accessKeySecret = credentials.accessKeySecret as string;
-					const userPoolId = getUserPoolId(credentials);
-
-					// eslint-disable-next-line @n8n/community-nodes/no-http-request-with-manual-auth
-					const tokenResponse = await this.helpers.httpRequest({
+					const userPoolId = getUserPoolId(credentials);					const tokenResponse = await this.helpers.httpRequest({
 						method: 'POST',
 						url: `${baseUrl}/api/v3/get-management-token`,
 						body: { accessKeyId, accessKeySecret },
@@ -45,9 +42,7 @@ export class AuthingAdmin implements INodeType {
 					let page = 1;
 					let allGroups: any[] = [];
 
-					while (true) {
-						// eslint-disable-next-line @n8n/community-nodes/no-http-request-with-manual-auth
-						const response = await this.helpers.httpRequest({
+					while (true) {						const response = await this.helpers.httpRequest({
 							method: 'GET',
 							url: `${baseUrl}/api/v3/list-groups`,
 							qs: { page, limit: PAGE_SIZE },
