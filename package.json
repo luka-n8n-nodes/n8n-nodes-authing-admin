@@ -32,8 +32,10 @@
     "dev": "n8n-node dev",
     "format": "prettier credentials nodes --write",
     "lint": "n8n-node lint",
-    "lintfix": "n8n-node lint --fix",
-    "prepublishOnly": "npm run build && npm run lint"
+    "prepublishOnly": "n8n-node prerelease",
+    "build:watch": "tsc --watch",
+    "lint:fix": "n8n-node lint --fix",
+    "release": "n8n-node release"
   },
   "files": [
     "dist"
@@ -45,15 +47,16 @@
     ],
     "nodes": [
       "dist/nodes/AuthingAdmin/AuthingAdmin.node.js"
-    ]
+    ],
+    "strict": false
   },
   "devDependencies": {
-    "@n8n/node-cli": "^0.17.2",
+    "@n8n/node-cli": "*",
     "@types/node": "^20.19.43",
-    "eslint": "^9.39.5",
-    "prettier": "^3.9.6",
-    "release-it": "^19.0.4",
-    "typescript": "^5.9.3"
+    "eslint": "9.39.4",
+    "prettier": "3.8.3",
+    "release-it": "20.2.0",
+    "typescript": "5.9.3"
   },
   "dependencies": {
     "glob": "^13.0.6"
